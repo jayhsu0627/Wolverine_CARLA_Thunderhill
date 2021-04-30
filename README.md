@@ -79,7 +79,7 @@ you'll get
 
 <p align="center">
     <a href="https://www.openstreetmap.org/#map=16/39.5387/-122.3368">
-    <img width="460" height="300" 
+    <img width="" height="300" 
     src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/map.png"
     alt="Thunderhill in OSM">
 </p>
