@@ -33,7 +33,7 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 |258 ft-lbs @ 1600 rpm	|**Torque**         | 280 ft-lbs @ 1900 rpm|
 |6-speed auto	        |**Transmission**   |6-speed auto	      |
 |5.3 sec	        |**0-to-60 time**   |4.6 sec	      |
-|5.3 sec	        |**Apperance**   |![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg)	      |
+| ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/Audi_TT.png) |**Apperance**   |![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg)	      |
 
 #### Video Archive:
 
@@ -74,6 +74,20 @@ you'll get
 
 ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/UE4_default_page.png)
 
+Remember, to ``` import carla``` , you always need to paste the the following before your any client scripts. The ```*.egg``` include all necessary package to convert your python3.7 script into CARLA c++ environment. More about this issue, see [this](https://carla.readthedocs.io/en/latest/build_system/).
+
+```
+try:
+    sys.path.append(glob.glob('/your/path/to/carla/CARLA_0.9.10/WindowsNoEditor/PythonAPI/carla/dist/carla-*%d.%d-%s.egg' % (
+        sys.version_info.major,
+        sys.version_info.minor,
+        'win-amd64' if os.name == 'nt' else 'linux-x86_64'))[0])
+except IndexError:
+    pass
+```
+
+
+
 ### Map Generation
 
 #### OpenStreetMap
@@ -106,8 +120,11 @@ You can try my Colab notebook by click
 
 [!["Stanford.ipynb" Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/11XgI3dEN68-wI52tvl7awQ_fPqkG-qge?usp=sharing)
 
-
 #### Navigate and Control
+
+#### Easter egg
+##### Dynamic change sun angle
+
 
 
 ****

@@ -71,16 +71,16 @@ def main():
     args.width, args.height = [int(x) for x in args.res.split('x')]
     ##Modifiable Variables from -1 to -5, as left to right
     # targetLane = -3
-    targetLane = -3
+    targetLane = -1
 
     client = carla.Client(args.host, args.port)
     client.set_timeout(30.0)
     # Read the opendrive file to a string
 
-    # xodr_path = "speedway_5lanes.xodr"
-    xodr_path = "Thunderhilll.xodr"
-    od_file = open(xodr_path)
-    data = od_file.read()
+    # # xodr_path = "speedway_5lanes.xodr"
+    # xodr_path = "Thunderhilll.xodr"
+    # od_file = open(xodr_path)
+    # data = od_file.read()
 
     # # Load the opendrive map
     vertex_distance = 2.0  # in meters
@@ -91,20 +91,20 @@ def main():
     waypoint_grid = 5
     # global waypoint_search_grid
     # waypoint_search_grid = 10
-    throttle_value = 0.7
-    initialized_point = 0
+    throttle_value = 0.0
+    initialized_point = 10
     constant_speed = 10 # m/s
 
 
-    world = client.generate_opendrive_world(
-        data, carla.OpendriveGenerationParameters(
-        vertex_distance=vertex_distance,
-        max_road_length=max_road_length,
-        wall_height=wall_height,
-        additional_width=extra_width,
-        smooth_junctions=True,
-        enable_mesh_visibility=True))
-    # world = client.load_world('Town02')
+    # world = client.generate_opendrive_world(
+    #     data, carla.OpendriveGenerationParameters(
+    #     vertex_distance=vertex_distance,
+    #     max_road_length=max_road_length,
+    #     wall_height=wall_height,
+    #     additional_width=extra_width,
+    #     smooth_junctions=True,
+    #     enable_mesh_visibility=True))
+    world = client.load_world('Town02')
     now = datetime.now()
     current_hours = int(now.strftime('%H'))/24*180
 
@@ -161,9 +161,9 @@ def main():
     end_waypoint = map.get_waypoint(transform.location + carla.Vector3D(0, -100, 0))
 
     #Remove all unneccesary waypoints along the straights
-    curvy_waypoints =  waypoint_list
+    # curvy_waypoints =  waypoint_list
     # curvy_waypoints = waypoints
-    # curvy_waypoints = get_curvy_waypoints(waypoints)
+    curvy_waypoints = get_curvy_waypoints(waypoints)
 
     # #Save graph of plotted points as bezier.png
     x = [p.transform.location.x for p in curvy_waypoints]
@@ -177,8 +177,9 @@ def main():
 
     #Set spawning location as initial waypoint
     waypoint = curvy_waypoints[initialized_point]
-    # blueprint = world.get_blueprint_library().filter('vehicle.*tt*')[0]
-    blueprint = world.get_blueprint_library().filter('vehicle.*mkz2017*')[0]
+    blueprint = world.get_blueprint_library().filter('vehicle.*tt*')[0]
+    # blueprint = world.get_blueprint_library().filter('vehicle.*mkz2017*')[0]
+    blueprint.set_attribute('color', '255,255,255')
 
     location = waypoint.transform.location + carla.Vector3D(0, 0, 1.5)
     rotation = waypoint.transform.rotation
@@ -238,10 +239,10 @@ def main():
         steer = control_pure_pursuit(vehicle_transform, waypoint.transform, max_steer, wheelbase)
         control = carla.VehicleControl(throttle, steer)
         vehicle.apply_control(control)
-        world.debug.draw_string(vehicle_transform.location, str('%15.0f km/h' % (3.6*math.sqrt(vehicle.get_velocity().x**2+vehicle.get_velocity().y**2))), color=carla.Color(r=0, g=255, b=200, a = 50), life_time=0.0001,
-                                            persistent_lines=True)
+        # world.debug.draw_string(vehicle_transform.location, str('%15.0f km/h' % (3.6*math.sqrt(vehicle.get_velocity().x**2+vehicle.get_velocity().y**2))), color=carla.Color(r=0, g=255, b=200, a = 50), life_time=0.0001,
+        #                                     persistent_lines=True)
         # time_2 = carla.timestamp()
-        world.debug.draw_string(vehicle_transform.location + carla.Location(x=1, y=0), str('%15.0f FPS' % (30)), color=carla.Color(r=100, g=0, b=10, a = 50), life_time=0.0001, persistent_lines=True)
+        # world.debug.draw_string(vehicle_transform.location + carla.Location(x=1, y=0), str('%15.0f FPS' % (30)), color=carla.Color(r=100, g=0, b=10, a = 50), life_time=0.0001, persistent_lines=True)
     log_level = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(format='%(levelname)s: %(message)s', level=log_level)
 
