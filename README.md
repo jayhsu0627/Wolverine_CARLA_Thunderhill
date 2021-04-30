@@ -19,7 +19,6 @@ This project is inspired by:
 </p>
 
 
-
 **Ours**
 
 <p align="center">
@@ -57,9 +56,28 @@ This project is inspired by:
 ## Get Started
 
 ### Environment
-1. Download CARLA UE4 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10)
-2. Create your anaconda environment with python=3.7
-3. 
+1. Download CARLA 0.9.10 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10), choose CARLA_0.9.10.zip.
+2. Build your anaconda environment
+
+```
+# Download your CARLA_0.9.10.zip
+# Extract it
+# Navigate to your carla folder
+cd \your\path\to\carla\CARLA_0.9.10\WindowsNoEditor
+CarlaUE4.exe
+
+
+# Create an environment from YAML file
+conda env create --file envname.yml
+```
+
+you'll get
+
+![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg)
+
+
+
+
 ### Scripts
 #### Wolverine (path generation)
 You can try my Colab notebook by click
