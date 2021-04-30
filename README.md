@@ -13,7 +13,7 @@ This project is inspired by:
 
 <p align="center">
     <a href="">
-    <img width="" height="800" 
+    <img width="" height="500" 
     src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/thil-from-airl.jpg"
     alt="thil-from-airl">
 </p>
@@ -23,7 +23,7 @@ This project is inspired by:
 
 <p align="center">
     <a href="">
-    <img width="" height="800"
+    <img width="" height="500"
 	src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png"
     alt="birdsview">
 </p>
