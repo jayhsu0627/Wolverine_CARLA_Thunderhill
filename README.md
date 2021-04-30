@@ -2,9 +2,7 @@
 
 ## What's this project about?
 ### Intution
-This project is inspired by:
-1.[Path following and path generation framework from Nitin Kapania's Stanford PhD packed in python](https://github.com/nkapania/Wolverine)
-2.[Creating Carla Waypoints in an Indianapolis racetrack ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656)
+This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github.com/nkapania/Wolverine), and [Charlotte Dorn's Indianapolis waypoint tracking project ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656).
 
 ### Where hosted
 
@@ -24,13 +22,14 @@ This project is inspired by:
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/thil-from-airl.jpg) | ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png) |
 
-
 ### Stanford Audi TTS
+
+*"Shelley, as the self-driving car is known, is the product of collaboration between Stanford's Dynamic Design Lab, led by mechanical engineering Associate Professor Chris Gerdes, and the Volkswagen Electronics Research Lab. Earlier this summer, Gerdes' group brought Shelley to Thunderhill for high-speed tests of the latest tweaks to the software that tells her when to brake, how tight to take turns and when to punch the gas. ---- Source: Stanford Report"*
 
 
 <p align="center">
     <a href="">
-    <img width="" height="500" 
+    <img width="" height="400" 
     src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg"
     alt="Stanford Audi TTS">
 </p>
@@ -113,8 +112,11 @@ You can try my Colab notebook by click
 
 see
 
-1. [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
-2. [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
-3. [Homepage of RoadRunner](https://www.mathworks.com/products/roadrunner.html)
+1. [Path following and path generation framework from Nitin Kapania's Stanford PhD packed in python](https://github.com/nkapania/Wolverine)
+2. [Creating Carla Waypoints in an Indianapolis racetrack ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656)
+3. [Shelley, Stanford's robotic racecar, hits the track ](https://news.stanford.edu/news/2012/august/shelley-autonomous-car-081312.html)
+4. [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
+5. [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
+6. [Homepage of RoadRunner](https://www.mathworks.com/products/roadrunner.html)
 
 
