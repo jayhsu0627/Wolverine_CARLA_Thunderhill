@@ -27,7 +27,15 @@ This project is inspired by:
 	src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png"
     alt="birdsview">
 </p>
+### Stanford Audi TTS
 
+
+<p align="center">
+    <a href="">
+    <img width="" height="500" 
+    src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg"
+    alt="Stanford Audi TTS">
+</p>
 
 ### Reference:
 
