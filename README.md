@@ -14,7 +14,7 @@ This project is inspired by:
 <p align="center">
     <a href="">
     <img width="800" height="" 
-    src="https://github.com/liangxiao3/redhat_note/raw/master/pics/birdsview.png"
+    src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/thil-from-airl.jpg"
     alt="thil-from-airl">
 </p>
 
@@ -22,8 +22,8 @@ This project is inspired by:
 **Ours**
 <p align="center">
     <a href="">
-    <img width="800" height="" 
-    src="https://github.com/liangxiao3/redhat_note/raw/master/pics/birdsview.png"
+    <img width="800" height=""
+	src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png"
     alt="birdsview">
 </p>
 
