@@ -9,24 +9,11 @@ This project is inspired by:
 ### Where hosted
 **Thunderhill but in CARLA 0.9.10**
 
-**Real**
+****
 
-<p align="center">
-    <a href="">
-    <img width="" height="500" 
-    src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/thil-from-airl.jpg"
-    alt="thil-from-airl">
-</p>
-
-
-**Ours**
-
-<p align="center">
-    <a href="">
-    <img width="" height="500"
-	src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png"
-    alt="birdsview">
-</p>
+| Real Racetrack   | Ours        |
+| ---------------- | ----------- |
+| ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/thil-from-airl.jpg)           | ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png)          |
 
 
 ### Stanford Audi TTS
