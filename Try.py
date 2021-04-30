@@ -77,10 +77,10 @@ def main():
     client.set_timeout(30.0)
     # Read the opendrive file to a string
 
-    # # xodr_path = "speedway_5lanes.xodr"
-    # xodr_path = "Thunderhilll.xodr"
-    # od_file = open(xodr_path)
-    # data = od_file.read()
+    # xodr_path = "speedway_5lanes.xodr"
+    xodr_path = "Thunderhilll.xodr"
+    od_file = open(xodr_path)
+    data = od_file.read()
 
     # # Load the opendrive map
     vertex_distance = 2.0  # in meters
@@ -96,15 +96,15 @@ def main():
     constant_speed = 10 # m/s
 
 
-    # world = client.generate_opendrive_world(
-    #     data, carla.OpendriveGenerationParameters(
-    #     vertex_distance=vertex_distance,
-    #     max_road_length=max_road_length,
-    #     wall_height=wall_height,
-    #     additional_width=extra_width,
-    #     smooth_junctions=True,
-    #     enable_mesh_visibility=True))
-    world = client.load_world('Town02')
+    world = client.generate_opendrive_world(
+        data, carla.OpendriveGenerationParameters(
+        vertex_distance=vertex_distance,
+        max_road_length=max_road_length,
+        wall_height=wall_height,
+        additional_width=extra_width,
+        smooth_junctions=True,
+        enable_mesh_visibility=True))
+    # world = client.load_world('Town02')
     now = datetime.now()
     current_hours = int(now.strftime('%H'))/24*180
 
