@@ -98,6 +98,10 @@ except IndexError:
 
 SRunner
 
+edit PATH environment
+
+
+
 ### Map Generation
 
 #### OpenStreetMap
@@ -133,6 +137,19 @@ You can try my Colab notebook by click
 [!["Stanford.ipynb" Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/11XgI3dEN68-wI52tvl7awQ_fPqkG-qge?usp=sharing)
 
 #### Navigate and Control
+
+
+
+```
+# Use PurePursuit to control
+python Try_w.py --control-method PurePursuit
+
+# Use Stanley to control
+python Try_w.py --control-method Stanley
+
+# Use MPC to control
+python Try_w.py --control-method MPC
+```
 
 #### Easter egg
 ##### Dynamic change sun angle

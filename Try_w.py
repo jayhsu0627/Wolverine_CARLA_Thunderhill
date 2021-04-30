@@ -1,8 +1,37 @@
+  
+# The codes included in Wolverine_CARLA_Thunderhill project are licensed under the terms of the MIT license, reproduced below.
+
+# = = = = =
+
+# The MIT License
+
+# Copyright (c) 2015-2019 Jukka Lehtosalo and contributors
+
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+# = = = = =
 import sys
 import glob
 import os
 import math
 import csv
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 try:
     sys.path.append(glob.glob('C:/carla/CARLA_0.9.10/WindowsNoEditor/PythonAPI/carla/dist/carla-*%d.%d-%s.egg' % (
@@ -21,7 +50,7 @@ except IndexError:
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-import pygame
+# import pygame
 import pandas as pd
 import argparse
 import os
@@ -36,7 +65,7 @@ import srunner
 from srunner.challenge.utils.route_manipulation import interpolate_trajectory
 
 # Controller Class
-# import controller2d_0910
+import controller2d
 
 global world
 
@@ -128,7 +157,7 @@ def main():
     spectator = world.get_spectator()
 
     map = world.get_map()
-    clock = pygame.time.Clock()
+    # clock = pygame.time.Clock()
     count = 0
 
 
@@ -291,12 +320,80 @@ def main():
         print('\nCancelled by user. Bye!')
     except Exception as error:
         logging.exception(error)
+
 def test_only():
+    """Main function.
+
+    Args:
+        -v, --verbose: print debug information
+        --host: IP of the host server (default: localhost)
+        -p, --port: TCP port to listen to (default: 2000)
+        -a, --autopilot: enable autopilot
+        -q, --quality-level: graphics quality level [Low or Epic]
+        -i, --images-to-disk: save images to disk
+        -c, --carla-settings: Path to CarlaSettings.ini file
+    """
+    argparser = argparse.ArgumentParser(description=__doc__)
+    argparser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        dest='debug',
+        help='print debug information')
+    argparser.add_argument(
+        '--host',
+        metavar='H',
+        default='localhost',
+        help='IP of the host server (default: localhost)')
+    argparser.add_argument(
+        '-p', '--port',
+        metavar='P',
+        default=2000,
+        type=int,
+        help='TCP port to listen to (default: 2000)')
+    argparser.add_argument(
+        '-a', '--autopilot',
+        action='store_true',
+        help='enable autopilot')
+    argparser.add_argument(
+        '-q', '--quality-level',
+        choices=['Low', 'Epic'],
+        type=lambda s: s.title(),
+        default='Low',
+        help='graphics quality level.')
+    argparser.add_argument(
+        '-c', '--carla-settings',
+        metavar='PATH',
+        dest='settings_filepath',
+        default=None,
+        help='Path to a "CarlaSettings.ini" file')
+    argparser.add_argument(
+        '--control-method',
+        metavar='CONTROL_METHOD',
+        dest='control_method',
+        choices = {'PurePursuit','Stanley','MPC'},
+        default='MPC',
+        help='Select control method for Lane Keeping Assist : PurePursuit, Stanley or MPC')
+    args = argparser.parse_args()
+
     file_path = 'C:\Shengjie\carla_indy\Wolverine_CARLA_Thunderhill\T01_waypoint.txt'
-    wp_np = importCSV(file_path)
-    print(wp_np)
-    print(len(wp_np))
+    wp_np,wp_list = importCSV(file_path)
+    # print(wp_np)
+    # print(wp_np.shape)
+    wp_dist,wp_np_inter,hash_table = interpWaypoints(wp_np,0.01)
+    # print(wp_dist)
+    # print(len(wp_np_inter),len(hash_table))
+
+    #############################################
+    # Controller 2D Class Declaration
+    #############################################
+    # This is where we take the controller2d.py class
+    # and apply it to the simulator
+    controller = controller2d.Controller2D(wp_list, args.control_method)
+    print("Wheel Base: ", controller._wheelbase)
+    print("Speed: ", controller._current_speed)
+
     return
+
 
 ############################################################################
 #                       Data Manipulation                                  #
@@ -310,7 +407,69 @@ def importCSV(WAYPOINTS_FILENAME):
                                     delimiter=',',
                                     quoting=csv.QUOTE_NONNUMERIC))
         waypoints_np = np.array(waypoints)
-    return waypoints_np
+    return waypoints_np,waypoints
+
+def interpWaypoints(waypoints_np,INTERP_DISTANCE_RES):
+    # Because the waypoints are discrete and our controller performs better
+    # with a continuous path, here we will send a subset of the waypoints
+    # within some lookahead distance from the closest point to the vehicle.
+    # Interpolating between each waypoint will provide a finer resolution
+    # path and make it more "continuous". A simple linear interpolation
+    # is used as a preliminary method to address this issue, though it is
+    # better addressed with better interpolation methods (spline
+    # interpolation, for example).
+
+    # More appropriate interpolation methods will not be used here for the
+    # sake of demonstration on what effects discrete paths can have on
+    # the controller. It is made much more obvious with linear
+    # interpolation, because in a way part of the path will be continuous
+    # while the discontinuous parts (which happens at the waypoints) will
+    # show just what sort of effects these points have on the controller.
+
+    # Inputs: waypoints_numpy_datasets, interpolation_resolution(0.01 meter recommended,
+    # once the input waypoints has a 1 meter interval.)
+    # Outputs: interpolated waypoints, hash_table of 
+
+    # Linear interpolation computations
+    # Compute a list of distances between waypoints
+    wp_distance = []   # distance array
+    for i in range(1, waypoints_np.shape[0]):
+        wp_distance.append(
+                np.sqrt((waypoints_np[i, 0] - waypoints_np[i-1, 0])**2 +
+                        (waypoints_np[i, 1] - waypoints_np[i-1, 1])**2))
+    wp_distance.append(0)  # last distance is 0 because it is the distance
+                            # from the last waypoint to the last waypoint
+
+    # Linearly interpolate between waypoints and store in a list
+    wp_interp      = []    # interpolated values
+                            # (rows = waypoints, columns = [x, y, v])
+    wp_interp_hash = []    # hash table which indexes waypoints_np
+                            # to the index of the waypoint in wp_interp
+    interp_counter = 0     # counter for current interpolated point index
+    for i in range(waypoints_np.shape[0] - 1):
+        # Add original waypoint to interpolated waypoints list (and append
+        # it to the hash table)
+        wp_interp.append(list(waypoints_np[i]))
+        wp_interp_hash.append(interp_counter)
+        interp_counter+=1
+
+        # Interpolate to the next waypoint. First compute the number of
+        # points to interpolate based on the desired resolution and
+        # incrementally add interpolated points until the next waypoint
+        # is about to be reached.
+        num_pts_to_interp = int(np.floor(wp_distance[i] /\
+                                        float(INTERP_DISTANCE_RES)) - 1)
+        wp_vector = waypoints_np[i+1] - waypoints_np[i]
+        wp_uvector = wp_vector / np.linalg.norm(wp_vector)
+        for j in range(num_pts_to_interp):
+            next_wp_vector = INTERP_DISTANCE_RES * float(j+1) * wp_uvector
+            wp_interp.append(list(waypoints_np[i] + next_wp_vector))
+            interp_counter+=1
+    # add last waypoint at the end
+    wp_interp.append(list(waypoints_np[-1]))
+    wp_interp_hash.append(interp_counter)
+    interp_counter+=1
+    return wp_distance,wp_interp,wp_interp_hash
 ############################################################################
 #                       Waypoints Generation                               #
 #                                                                          #
@@ -390,9 +549,37 @@ def getNexWaypoint(world, vehicle, waypoints):
     return next_waypoint
 
 ############################################################################
-#                       Controller Configuration                           #
+#                       Controller Group                                   #
 #                                                                          #
 ############################################################################
+
+
+def send_control_command(client, throttle, steer, brake,
+                         hand_brake=False, reverse=False):
+    """Send control command to CARLA client.
+    NOTE: CARLA 0.8 only
+    Send control command to CARLA client.
+
+    Args:
+        client: The CARLA client object
+        throttle: Throttle command for the sim car [0, 1]
+        steer: Steer command for the sim car [-1, 1]
+        brake: Brake command for the sim car [0, 1]
+        hand_brake: Whether the hand brake is engaged
+        reverse: Whether the sim car is in the reverse gear
+    """
+    control = VehicleControl()
+    # Clamp all values within their limits
+    steer = np.fmax(np.fmin(steer, 1.0), -1.0)
+    throttle = np.fmax(np.fmin(throttle, 1.0), 0)
+    brake = np.fmax(np.fmin(brake, 1.0), 0)
+
+    control.steer = steer
+    control.throttle = throttle
+    control.brake = brake
+    control.hand_brake = hand_brake
+    control.reverse = reverse
+    client.send_control(control)
 
 def control_pure_pursuit(vehicle_tr, waypoint_tr, max_steer, wheelbase):
     # TODO: convert vehicle transform to rear axle transform
