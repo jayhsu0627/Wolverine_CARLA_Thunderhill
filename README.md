@@ -51,7 +51,17 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 ****
 ## Get Started
 
+### Requirements
+
+Copied from [CARLA Documentation](https://carla.readthedocs.io/en/0.9.11/start_quickstart/#requirements).
+
+- **Server side.** A **4GB minimum GPU** will be needed to run a highly realistic environment. A dedicated GPU is highly advised for machine learning. **(Note: ours has three GTX 1080Ti, with 12GB for each GPU)**
+- **Client side.** [Python](https://www.python.org/downloads/) is necessary to access the API via command line. Also, a good internet connection and two TCP ports (2000 and 2001 by default).
+- **System requirements.** Any 64-bits OS should run CARLA. However, since release 0.9.9, **CARLA cannot run in 16.04 Linux systems with default compilers**. These should be upgraded to work with CARLA.
+- **Other requirements.** Two Python modules: ~~[Pygame](https://pypi.org/project/pygame/) to create graphics directly with Python~~, and [Numpy](https://pypi.org/project/numpy/) for great calculus.
+
 ### Environment
+
 1. Download CARLA 0.9.10 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10), choose CARLA_0.9.10.zip.
 2. Build your anaconda environment, dependency see envname.yml
 
