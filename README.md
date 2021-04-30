@@ -47,7 +47,23 @@ This project is inspired by:
 </p>
 [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
 
-## Installation and Dependency
+# Get Started
+
+## Environment
+1. Download CARLA UE4 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10)
+2. Create your anaconda environment with python=3.7
+3. 
+## Scripts
+### Wolverine (path generation)
+You can try my Colab notebook by click
+
+[!["Stanford.ipynb" Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/11XgI3dEN68-wI52tvl7awQ_fPqkG-qge?usp=sharing)
+
+
+### Navigate and Control
+
+
+
 see
 
 1. [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
