@@ -2,7 +2,7 @@
 
 ## What's this project about?
 ### Intution
-This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github.com/nkapania/Wolverine), and [Charlotte Dorn's Indianapolis waypoint tracking project ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656).
+This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github.com/nkapania/Wolverine), [Final project for course 1 of the Coursera: Introduction to Self-Driving Cars](https://dingyan89.medium.com/three-methods-of-vehicle-lateral-control-pure-pursuit-stanley-and-mpc-db8cc1d32081), and [Charlotte Dorn's Indianapolis waypoint tracking project ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656). What if we run a vitual Audi TT in Thunderhill racetrack to test Kapania's path generation algorithm? 
 
 ### Where hosted
 
@@ -128,13 +128,12 @@ You can try my Colab notebook by click
 
 
 ****
-see
+Reference:
 
 1. [Path following and path generation framework from Nitin Kapania's Stanford PhD packed in python](https://github.com/nkapania/Wolverine)
 2. [Creating Carla Waypoints in an Indianapolis racetrack ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656)
 3. [Shelley, Stanford's robotic racecar, hits the track ](https://news.stanford.edu/news/2012/august/shelley-autonomous-car-081312.html)
 4. [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
-5. [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
-6. [Homepage of RoadRunner](https://www.mathworks.com/products/roadrunner.html)
-
-
+5. [Three Methods of Vehicle Lateral Control: Pure Pursuit, Stanley and MPC](https://dingyan89.medium.com/three-methods-of-vehicle-lateral-control-pure-pursuit-stanley-and-mpc-db8cc1d32081)
+6.  [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
+7.  [Homepage of RoadRunner](https://www.mathworks.com/products/roadrunner.html)
