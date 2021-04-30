@@ -92,6 +92,8 @@ except IndexError:
 
 #### OpenStreetMap
 
+Click the following picture, jump to OpenStreetMap in your browser.
+
 <p align="center">
     <a href="https://www.openstreetmap.org/#map=16/39.5387/-122.3368">
     <img width="" height="300" 
