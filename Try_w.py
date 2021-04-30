@@ -1,8 +1,9 @@
+import sys
 import glob
 import os
-import sys
 import math
-from datetime import datetime
+import csv
+
 try:
     sys.path.append(glob.glob('C:/carla/CARLA_0.9.10/WindowsNoEditor/PythonAPI/carla/dist/carla-*%d.%d-%s.egg' % (
         sys.version_info.major,
@@ -17,27 +18,26 @@ except IndexError:
 
     sys.path.append(glob.glob(''))
 
-import carla
 import matplotlib.pyplot as plt
 import numpy as np
-import math
 import time
 import pygame
 import pandas as pd
 import argparse
 import os
-import argparse
 import logging
 import time
-import pygame
+from datetime import datetime
+
+import carla
 from manual_control import (World, HUD, KeyboardControl, CameraManager,
                                      CollisionSensor, LaneInvasionSensor, GnssSensor, IMUSensor)
 import srunner	
 from srunner.challenge.utils.route_manipulation import interpolate_trajectory
 
-
 # Controller Class
 # import controller2d_0910
+
 global world
 
 def main():
@@ -291,6 +291,26 @@ def main():
         print('\nCancelled by user. Bye!')
     except Exception as error:
         logging.exception(error)
+def test_only():
+    file_path = 'C:\Shengjie\carla_indy\Wolverine_CARLA_Thunderhill\T01_waypoint.txt'
+    wp_np = importCSV(file_path)
+    print(wp_np)
+    print(len(wp_np))
+    return
+
+############################################################################
+#                       Data Manipulation                                  #
+#                                                                          #
+############################################################################
+def importCSV(WAYPOINTS_FILENAME):
+    waypoints_file = WAYPOINTS_FILENAME
+    waypoints_np   = None
+    with open(waypoints_file) as waypoints_file_handle:
+        waypoints = list(csv.reader(waypoints_file_handle,
+                                    delimiter=',',
+                                    quoting=csv.QUOTE_NONNUMERIC))
+        waypoints_np = np.array(waypoints)
+    return waypoints_np
 ############################################################################
 #                       Waypoints Generation                               #
 #                                                                          #
@@ -353,6 +373,7 @@ def packWaypoints(waypoint_txt,world_input):
         # output_wp = sample_wp
         output_waypoint_list.append(output_wp)
     return output_waypoint_list
+
 def getNexWaypoint(world, vehicle, waypoints):
     vehicle_location = vehicle.get_location()
     min_distance = 10
@@ -382,6 +403,7 @@ def control_pure_pursuit(vehicle_tr, waypoint_tr, max_steer, wheelbase):
     steer_deg = math.degrees(steer_rad)
     steer_deg = np.clip(steer_deg, -max_steer, max_steer)
     return steer_deg / max_steer
+
 def relative_location(frame, location):
   origin = frame.location
   forward = frame.get_forward_vector()
@@ -420,6 +442,7 @@ def get_curvy_waypoints(waypoints):
     curvy_waypoints.append(curvy_waypoints[0])
 
     return curvy_waypoints
+
 def get_nearest_waypoints(vehicle,map):
     min_distance = 10000
     wp = map.get_waypoint(vehicle.get_location(),project_to_road=True, lane_type=(carla.LaneType.Driving | carla.LaneType.Shoulder))
@@ -429,6 +452,7 @@ def get_nearest_waypoints(vehicle,map):
         min_distance = vehicle_location.distance(waypoint_location)
         if vehicle_location.distance(waypoint_location) < min_distance and vehicle_location.distance(waypoint_location) > 5:
             return wp
+
 def control_pure_pursuit(vehicle_tr, waypoint_tr, max_steer, wheelbase):
     # TODO: convert vehicle transform to rear axle transform
     wp_loc_rel = relative_location(vehicle_tr, waypoint_tr.location) + carla.Vector3D(wheelbase, 0, 0)
@@ -449,6 +473,7 @@ def relative_location(frame, location):
   y = np.dot([disp.x, disp.y, disp.z], [right.x, right.y, right.z])
   z = np.dot([disp.x, disp.y, disp.z], [up.x, up.y, up.z])
   return carla.Vector3D(x, y, z)
+
 def get_next_waypoint(world, vehicle, waypoints):
     vehicle_location = vehicle.get_location()
     min_distance = 1000
@@ -482,7 +507,8 @@ def get_next_waypoint(world, vehicle, waypoints):
 if __name__ == "__main__":
 
     try:
-        main()
+        # main()
+        test_only()
     except KeyboardInterrupt:
         pass
     finally:
