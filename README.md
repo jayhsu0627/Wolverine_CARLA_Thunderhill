@@ -48,7 +48,7 @@ This project is inspired by:
     alt="Shelley, Stanford's Robotic Car, Hits the Track">
 </p>
 
-[Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
+
 
 
 ## Backbone
@@ -57,7 +57,7 @@ This project is inspired by:
 
 ### Environment
 1. Download CARLA 0.9.10 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10), choose CARLA_0.9.10.zip.
-2. Build your anaconda environment
+2. Build your anaconda environment, dependancy see envname.yml
 
 ```
 # Download your CARLA_0.9.10.zip
@@ -66,9 +66,12 @@ This project is inspired by:
 cd \your\path\to\carla\CARLA_0.9.10\WindowsNoEditor
 CarlaUE4.exe
 
-
-# Create an environment from YAML file
+# Create an environment named py37 from YAML file
 conda env create --file envname.yml
+
+# Activate your environment
+conda activate py37
+
 ```
 
 you'll get
@@ -87,6 +90,7 @@ you'll get
 </p>
 
 Copy following code to view in HTML
+
 ```HTML
 <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-122.35038042068483%2C39.530773993553694%2C-122.32338666915895%2C39.546560835379374&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=16/39.5387/-122.3369">Check Larger Map</a></small>
 ```
@@ -95,12 +99,6 @@ Copy following code to view in HTML
 #### RoadRunner
 
 *"RoadRunner is an interactive editor that lets you design 3D scenes for simulating and testing automated driving systems. You can customize roadway scenes by creating region-specific road signs and markings. You can insert signs, signals, guardrails, and road damage, as well as foliage, buildings, and other 3D models. RoadRunner provides tools for setting and configuring traffic signal timing, phases, and vehicle paths at intersections.----MathWorks"*
-
-
-
-see [Homepage of RoadRunner](https://www.mathworks.com/products/roadrunner.html)
-
-see 
 
 
 ### Scripts
@@ -116,5 +114,8 @@ You can try my Colab notebook by click
 
 see
 
-1. [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
+1. [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
+2. [ScenarioRunner Getting started](https://github.com/carla-simulator/scenario_runner/blob/master/Docs/getting_scenariorunner.md)
+3. [Homepage of RoadRunner](https://www.mathworks.com/products/roadrunner.html)
+
 
