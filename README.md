@@ -14,7 +14,7 @@ This project is inspired by:
 <p align="center">
     <a href="">
     <img width="800" height="" 
-    src="\pics\birdsview.png"
+    src="https://github.com/liangxiao3/redhat_note/raw/master/pics/birdsview.png"
     alt="thil-from-airl">
 </p>
 
@@ -23,7 +23,7 @@ This project is inspired by:
 <p align="center">
     <a href="">
     <img width="800" height="" 
-    src="\pics\birdsview.png"
+    src="https://github.com/liangxiao3/redhat_note/raw/master/pics/birdsview.png"
     alt="birdsview">
 </p>
 
