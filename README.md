@@ -7,7 +7,16 @@ This project is inspired by:
 2.[Creating Carla Waypoints in an Indianapolis racetrack ](https://medium.com/@chardorn/creating-carla-waypoints-9d2cc5c6a656)
 
 ### Where hosted
-**Thunderhill but in CARLA 0.9.10**
+
+About Thunderhill
+
+*"Thunderhill Raceway Park is a motorsports complex located 7 miles West of Willows, California, United States, in the Sacramento Valley. It is the venue for the longest automobile race in the United States, the 25 Hours of Thunderhill, held annually during the first weekend in December.*
+
+*Thunderhill has two tracks: the original 3 mile track known as Thunderhill East and a 2 mile track known as Thunderhill West. The two tracks can also be combined to offer a 5-mile track, the longest road course in America. Thunderhill also offers two large skid pad areas as well for drifting and car control events. ---- Source: [Wikipedia](https://en.wikipedia.org/wiki/Thunderhill_Raceway_Park)"*
+
+
+
+**Our Thunderhill but in CARLA 0.9.10**
 
 ****
 
