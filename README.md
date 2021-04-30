@@ -19,6 +19,8 @@ This project is inspired by:
 </p>
 <p >
 </p>
+
+
 **Ours**
 
 <p align="center">
@@ -27,6 +29,8 @@ This project is inspired by:
 	src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png"
     alt="birdsview">
 </p>
+
+
 ### Stanford Audi TTS
 
 
@@ -45,7 +49,10 @@ This project is inspired by:
     src="http://img.youtube.com/vi/YxHcJTs2Sxk/0.jpg"
     alt="Shelley, Stanford's Robotic Car, Hits the Track">
 </p>
+
 [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
+
+
 ## Backbone
 
 ## Get Started
