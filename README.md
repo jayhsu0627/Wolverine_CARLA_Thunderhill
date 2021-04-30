@@ -16,7 +16,7 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 
 **Our Thunderhill but in CARLA 0.9.10**
 
-****
+
 
 | Real Thunderhill                                             | Ours                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -45,9 +45,9 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 
 
 
-
+****
 ## Backbone
-
+****
 ## Get Started
 
 ### Environment
@@ -109,7 +109,7 @@ You can try my Colab notebook by click
 #### Navigate and Control
 
 
-
+****
 see
 
 1. [Path following and path generation framework from Nitin Kapania's Stanford PhD packed in python](https://github.com/nkapania/Wolverine)
