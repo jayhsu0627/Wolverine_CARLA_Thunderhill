@@ -89,7 +89,10 @@ you'll get
     alt="Thunderhill in OSM">
 </p>
 
+
 Copy following code to view in HTML
+
+
 
 ```HTML
 <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-122.35038042068483%2C39.530773993553694%2C-122.32338666915895%2C39.546560835379374&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/#map=16/39.5387/-122.3369">Check Larger Map</a></small>
