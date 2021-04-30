@@ -73,7 +73,7 @@ conda env create --file envname.yml
 
 you'll get
 
-![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg)
+![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/UE4_default_page.png)
 
 
 
