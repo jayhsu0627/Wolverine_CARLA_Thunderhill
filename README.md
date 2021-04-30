@@ -62,8 +62,8 @@ Copied from [CARLA Documentation](https://carla.readthedocs.io/en/0.9.11/start_q
 
 ### Environment
 
-1. Download CARLA 0.9.10 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10), choose CARLA_0.9.10.zip.
-2. Build your anaconda environment, dependency see envname.yml
+1. Download **CARLA 0.9.10** compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10), choose CARLA_0.9.10.zip.
+2. Build your anaconda environment, dependency see envname.yml. Our environment is built with miniconda and a python=3.7 environment.
 
 ```
 # Download your CARLA_0.9.10.zip
