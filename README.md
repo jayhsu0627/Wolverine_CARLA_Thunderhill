@@ -46,21 +46,22 @@ This project is inspired by:
     alt="Shelley, Stanford's Robotic Car, Hits the Track">
 </p>
 [Our Very Own Grand Challenge](https://medium.com/udacity/our-very-own-grand-challenge-b004a9863024)
+## Backbone
 
-# Get Started
+## Get Started
 
-## Environment
+### Environment
 1. Download CARLA UE4 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10)
 2. Create your anaconda environment with python=3.7
 3. 
-## Scripts
-### Wolverine (path generation)
+### Scripts
+#### Wolverine (path generation)
 You can try my Colab notebook by click
 
 [!["Stanford.ipynb" Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/11XgI3dEN68-wI52tvl7awQ_fPqkG-qge?usp=sharing)
 
 
-### Navigate and Control
+#### Navigate and Control
 
 
 
