@@ -16,8 +16,6 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 
 **Our Thunderhill but in CARLA 0.9.10**
 
-
-
 | Real Thunderhill                                             | Ours                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/thil-from-airl.jpg) | ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/birdsview.png) |
@@ -27,14 +25,17 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 *"Shelley, as the self-driving car is known, is the product of collaboration between Stanford's Dynamic Design Lab, led by mechanical engineering Associate Professor Chris Gerdes, and the Volkswagen Electronics Research Lab. Earlier this summer, Gerdes' group brought Shelley to Thunderhill for high-speed tests of the latest tweaks to the software that tells her when to brake, how tight to take turns and when to punch the gas. ---- Source: Stanford Report"*
 
 
-<p align="center">
-    <a href="">
-    <img width="" height="400" 
-    src="https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg"
-    alt="Stanford Audi TTS">
-</p>
+| **Audi TT**           |       |Audi TTS 'Shelley'   |
+| --------------------- | ----  |-------------------- |
+|2.0 L I-4              |**Engine**         | 2.0 L I-4           |
+|23/30 mpg (city/hwy)   |**Fuel Efficiency**|23/27 mpg (city/hwy) |
+|220 @ 4500 rpm	        |**Horsepower**     |292 @ 5400 rpm       |
+|258 ft-lbs @ 1600 rpm	|**Torque**         | 280 ft-lbs @ 1900 rpm|
+|6-speed auto	        |**Transmission**   |6-speed auto	      |
+|5.3 sec	        |**0-to-60 time**   |4.6 sec	      |
+|5.3 sec	        |**Apperance**   |![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg)	      |
 
-### Reference:
+#### Video Archive:
 
 <p align="center">
     <a href="http://www.youtube.com/watch?v=YxHcJTs2Sxk">
@@ -52,7 +53,7 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 
 ### Environment
 1. Download CARLA 0.9.10 compiled package from [here](https://github.com/carla-simulator/carla/releases/tag/0.9.10), choose CARLA_0.9.10.zip.
-2. Build your anaconda environment, dependancy see envname.yml
+2. Build your anaconda environment, dependency see envname.yml
 
 ```
 # Download your CARLA_0.9.10.zip
@@ -75,7 +76,7 @@ you'll get
 
 ### Map Generation
 
-#### OpenStreeMap
+#### OpenStreetMap
 
 <p align="center">
     <a href="https://www.openstreetmap.org/#map=16/39.5387/-122.3368">
