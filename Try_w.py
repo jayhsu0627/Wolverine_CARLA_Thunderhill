@@ -1,4 +1,3 @@
-  
 # The codes included in Wolverine_CARLA_Thunderhill project are licensed under the terms of the MIT license, reproduced below.
 
 # = = = = =
@@ -553,7 +552,6 @@ def getNexWaypoint(world, vehicle, waypoints):
 #                                                                          #
 ############################################################################
 
-
 def send_control_command(client, throttle, steer, brake,
                          hand_brake=False, reverse=False):
     """Send control command to CARLA client.
@@ -580,6 +578,41 @@ def send_control_command(client, throttle, steer, brake,
     control.hand_brake = hand_brake
     control.reverse = reverse
     client.send_control(control)
+
+def shiftCoordinate(args):
+    # Gather current data from the CARLA server
+    measurement_data, sensor_data = client.read_data()
+
+    # Update pose, timestamp
+    current_x, current_y, current_yaw = \
+        get_current_pose(measurement_data)
+    current_speed = measurement_data.player_measurements.forward_speed
+    current_timestamp = float(measurement_data.game_timestamp) / 1000.0
+
+    # Shift x, y coordinates
+    if args.control_method == 'PurePursuit':
+        length = -1.5
+    elif args.control_method == 'Stanley' or args.control_method == 'MPC':
+        length = 1.5
+    else:
+        length = 0.0
+    current_x, current_y = controller.get_shifted_coordinate(current_x, current_y, current_yaw, length)
+    return current_x, current_y
+
+def updateCommand():
+    # for the next controller update.
+    new_waypoints = \
+            wp_interp[wp_interp_hash[waypoint_subset_first_index]:\
+                        wp_interp_hash[waypoint_subset_last_index] + 1]
+    controller.update_waypoints(new_waypoints)
+
+    # Update the other controller values and controls
+    controller.update_values(current_x, current_y, current_yaw,
+                                current_speed,
+                                current_timestamp, frame, new_distance)
+    controller.update_controls()
+    cmd_throttle, cmd_steer, cmd_brake = controller.get_commands()
+    return cmd_throttle, cmd_steer, cmd_brake
 
 def control_pure_pursuit(vehicle_tr, waypoint_tr, max_steer, wheelbase):
     # TODO: convert vehicle transform to rear axle transform

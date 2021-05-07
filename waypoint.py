@@ -90,7 +90,7 @@ try:
 	end_waypoint = map.get_waypoint(transform.location + carla.Vector3D(0, -30, 0))
 	
 	waypoints = [start_waypoint.transform.location, end_waypoint.transform.location]
-	gps_route, trajectory = interpolate_trajectory(world,waypoints,0.8)
+	gps_route, trajectory = interpolate_trajectory(world,waypoints,1)
 	# print(gps_route)
 	print(len(gps_route))
 	print("**************************************")
