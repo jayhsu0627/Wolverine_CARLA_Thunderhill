@@ -83,18 +83,16 @@ try:
 	mp = world.get_map()#get the map of the current world.
 	blueprint_library = world.get_blueprint_library()
 	
-	transform = carla.Transform(carla.Location(x=13, y=-0.01, z=0), carla.Rotation(pitch=0,yaw=180,roll=0))
+	transform = carla.Transform(carla.Location(x=16.867473602294922, y=191.2739715576172, z=0), carla.Rotation(pitch=0,yaw=180,roll=0))
 	map = world.get_map()
-	start_waypoint = map.get_waypoint(transform.location)
+	end_waypoint = map.get_waypoint(transform.location)
 	# end_waypoint = start_waypoint.next(4556)[-1]
-	end_waypoint = map.get_waypoint(transform.location + carla.Vector3D(0, -30, 0))
+	start_waypoint = map.get_waypoint(transform.location + carla.Vector3D(0, -300, 0))
 	
 	waypoints = [start_waypoint.transform.location, end_waypoint.transform.location]
 	gps_route, trajectory = interpolate_trajectory(world,waypoints,1)
-	# print(gps_route)
 	print(len(gps_route))
 	print("**************************************")
-	# print(trajectory)
 	print(len(trajectory))
 
 	#print(_get_waypoints(trajectory))
@@ -112,6 +110,7 @@ try:
 	
 	def text_save(filename, data):#filename为写入CSV文件的路径，data为要写入数据列表.
 		file = open(filename,'w')
+		print(len(data))
 		for i in range(len(data)):
 			s = str(data[i]).replace('[','').replace(']','')#去除[],这两行按数据不同，可以选择
 			# s = s.replace("'",'').replace(',','') +'\n'
@@ -144,7 +143,7 @@ try:
 											color=color, life_time=persistency,
 											persistent_lines=True)
 	waypoints_list = _get_waypoints(trajectory)
-	filename = 'C:\Shengjie\carla_indy\T01_waypoint.txt'
+	filename = 'C:\Shengjie\carla_indy\stanford_waypoints_2.txt'
 	text_save(filename, waypoints_list)
 	draw_trajectory(trajectory,200,0.5)
 

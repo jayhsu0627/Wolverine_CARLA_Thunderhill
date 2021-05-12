@@ -111,11 +111,13 @@ PLOT_HEIGHT        = 0.8
 
 # WAYPOINTS_FILENAME = 'T01_waypoint.txt'  # waypoint file to load
 
-WAYPOINTS_FILENAME = 'T01_waypoint_all_2.txt'  # waypoint file to load
+# WAYPOINTS_FILENAME = 'all_waypoints_3.txt'  # waypoint file to load
+# WAYPOINTS_FILENAME = 'T01_waypoint_all_2.txt'  # waypoint file to load
+WAYPOINTS_FILENAME = 'stanford_waypoints_full.txt'  # waypoint file to load
 
 # WAYPOINTS_FILENAME = 'racetrack_waypoints.txt'  # waypoint file to load
 
-DIST_THRESHOLD_TO_LAST_WAYPOINT = 1.0  # some distance from last position before
+DIST_THRESHOLD_TO_LAST_WAYPOINT = 10.0  # some distance from last position before
                                        # simulation ends
 
 # Path interpolation parameters
@@ -244,7 +246,6 @@ def send_control_command(vehicle,throttle, steer, brake,
     control_para.reverse = reverse
     vehicle.apply_control(control_para)
 
-
 def create_controller_output_dir(output_folder):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -290,7 +291,6 @@ def make_carla_client(host,port):
     constant_speed = 10 # m/s
     global section
     section = 500
-
     world = client.generate_opendrive_world(
         data, carla.OpendriveGenerationParameters(
         vertex_distance=vertex_distance,
@@ -328,15 +328,15 @@ def make_carla_client(host,port):
     map = world.get_map()
     print('make_carla_client----Carla client connected.')
 
-    transform = carla.Transform(carla.Location(x=13, y=-0.01, z=0), carla.Rotation(pitch=0,yaw=180,roll=0))
+    transform = carla.Transform(carla.Location(x=18.30674744, y=191.2394257, z=0), carla.Rotation(pitch=0,yaw=0,roll=0))
     start_waypoint = map.get_waypoint(transform.location)
 
-    #Set spawning location as initial waypoint
+    # #Set spawning location as initial waypoint
     waypoint = start_waypoint
     blueprint = world.get_blueprint_library().filter('vehicle.*tt*')[0]
     blueprint.set_attribute('color', '255,255,246')
     location = waypoint.transform.location + carla.Vector3D(0, 0, 1.5)
-    rotation = waypoint.transform.rotation
+    rotation = carla.Rotation(pitch=0,yaw=90,roll=0)
 
     vehicle = world.spawn_actor(blueprint, carla.Transform(location, rotation))
     print("make_carla_client----SPAWNED!")
@@ -349,9 +349,9 @@ def make_carla_client(host,port):
     camera_transform = carla.Transform(carla.Location(x=-10,z=7), carla.Rotation(-20,0,0))
     camera = world.spawn_actor(camera_bp, camera_transform, attach_to=vehicle)
     spectator.set_transform(camera.get_transform())
-    # spectator.set_transform(camera.get_transform())    
+    spectator.set_transform(camera.get_transform())    
     print("make_carla_client----Camera Done!")
-    return client, world, vehicle, spectator, camera
+    return client, world, spectator, map , vehicle, camera
 
 def exec_waypoint_nav_demo(args):
     """ Executes waypoint navigation demo.
@@ -367,18 +367,15 @@ def exec_waypoint_nav_demo(args):
     print('mark3')
 
     # with make_carla_client(args.host, args.port) as client:
-    client, world, vehicle, spectator, camera = make_carla_client(args.host,args.port)
+    client, world, spectator, map, vehicle, camera = make_carla_client(args.host,args.port)
 
-    #Add spectator camera to get the view to move with the car 
-    camera_bp = world.get_blueprint_library().find('sensor.camera.rgb')
-    # camera_transform = carla.Transform(carla.Location(x=-10,z=10), carla.Rotation(-20,0,0))
-    camera_transform = carla.Transform(carla.Location(x=-10,z=7), carla.Rotation(-20,0,0))
-    camera = world.spawn_actor(camera_bp, camera_transform, attach_to=vehicle)
+    # #Add spectator camera to get the view to move with the car 
+    # camera_bp = world.get_blueprint_library().find('sensor.camera.rgb')
+    # # camera_transform = carla.Transform(carla.Location(x=-10,z=10), carla.Rotation(-20,0,0))
+    # camera_transform = carla.Transform(carla.Location(x=-10,z=7), carla.Rotation(-20,0,0))
+    # camera = world.spawn_actor(camera_bp, camera_transform, attach_to=vehicle)
 
-
-
-
-    spectator.set_transform(camera.get_transform())
+    # spectator.set_transform(camera.get_transform())
 
     print(client)
     print('Carla client connected.')
@@ -439,9 +436,29 @@ def exec_waypoint_nav_demo(args):
 
     for w in waypoints_np:
         world.debug.draw_string(carla.Location(x=w[0],y = w[1]), 'O', draw_shadow=False,
-                                    color=carla.Color(r=255, g=255, b=0, a =200), life_time=120.0,
+                                    color=carla.Color(r=255, g=255, b=0, a =200), life_time=500.0,
                                     persistent_lines=True)
 
+    # print(waypoints_np[0][0],waypoints_np[0][1])
+    # # Refresh Vehicle start location
+    # transform = carla.Transform(carla.Location(x=waypoints_np[0][0], y=waypoints_np[0][1], z=0), carla.Rotation(pitch=0,yaw=0,roll=0))
+    # print("1")
+    # start_waypoint = map.get_waypoint(transform.location)
+    # print(start_waypoint.transform)
+    # blueprint = world.get_blueprint_library().filter('vehicle.*tt*')[0]
+    # blueprint.set_attribute('color', '255,255,246')
+    # print("2")
+    # # location = start_waypoint.transform.location
+    # print('location')
+    # # rotation = carla.Rotation(pitch=0,yaw=90,roll=0)
+    # print('rotation')
+    # print(world,blueprint,start_waypoint.transform)
+    # vehicle = world.spawn_actor(blueprint, start_waypoint.transform)
+    # # vehicle = world.spawn_actor(blueprint, carla.Transform(location, rotation))
+    # print('vehicle')
+    # vehicle.set_simulate_physics(True)
+    # vehicle.set_light_state(carla.VehicleLightState(carla.VehicleLightState.All | carla.VehicleLightState.LowBeam | carla.VehicleLightState.HighBeam | carla.VehicleLightState.Interior))
+    # print("333")
 
     # Because the waypoints are discrete and our controller performs better
     # with a continuous path, here we will send a subset of the waypoints
@@ -519,7 +536,8 @@ def exec_waypoint_nav_demo(args):
     #############################################
     # This is where we take the controller2d.py class
     # and apply it to the simulator
-    controller = controller2d.Controller2D(waypoints, args.control_method)
+    # controller = controller2d.Controller2D(waypoints, args.control_method)
+    controller = controller2d.Controller2D(waypoints, args.control_method, world)
     print('Controller loaded')
     #############################################
     # Determine simulation average timestep (and total frames)
@@ -622,7 +640,6 @@ def exec_waypoint_nav_demo(args):
                                 x0=[start_x]*TOTAL_EPISODE_FRAMES,
                                 y0=[start_y]*TOTAL_EPISODE_FRAMES,
                                 color=[1, 0.5, 0])
-    """
     # Add lookahead path
     trajectory_fig.add_graph("lookahead_path",
                                 window_size=INTERP_MAX_POINTS_PLOT,
@@ -630,7 +647,6 @@ def exec_waypoint_nav_demo(args):
                                 y0=[start_y]*INTERP_MAX_POINTS_PLOT,
                                 color=[0, 0.7, 0.7],
                                 linewidth=4)
-    """
     # Add starting position marker
     trajectory_fig.add_graph("start_pos", window_size=1,
                                 x0=[start_x], y0=[start_y],
@@ -664,13 +680,12 @@ def exec_waypoint_nav_demo(args):
     throttle_fig.add_graph("throttle",
                             label="throttle",
                             window_size=TOTAL_EPISODE_FRAMES)
-    """
     # Add brake signals graph
-    brake_fig = lp_1d.plot_new_dynamic_figure(title="Brake")
+    brake_fig = lp_1d.plot_new_dynamic_figure(title="Brake (%)")
     brake_fig.add_graph("brake",
                             label="brake",
                             window_size=TOTAL_EPISODE_FRAMES)
-    """
+
     # Add steering signals graph
     steer_fig = lp_1d.plot_new_dynamic_figure(title="Steer (Degree)")
     steer_fig.add_graph("steer",
@@ -690,21 +705,44 @@ def exec_waypoint_nav_demo(args):
     closest_index    = 0  # Index of waypoint that is currently closest to
                             # the car (assumed to be the first index)
     closest_distance = 0  # Closest distance of closest waypoint to car
+
+    # #Add spectator camera to get the view to move with the car 
+    # camera_bp = world.get_blueprint_library().find('sensor.camera.rgb')
+    # # camera_transform = carla.Transform(carla.Location(x=-10,z=10), carla.Rotation(-20,0,0))
+    # camera_transform = carla.Transform(carla.Location(x=-10,z=7), carla.Rotation(-20,0,0))
+    # camera = world.spawn_actor(camera_bp, camera_transform, attach_to=vehicle)
+
+
     for frame in range(TOTAL_EPISODE_FRAMES):
         # Gather current data from the CARLA server
         # measurement_data, sensor_data = client.read_data()
 
-        current_x = round(vehicle.get_transform().location.x,2)
-        current_y = round(vehicle.get_transform().location.y,2)
-        current_yaw = round(vehicle.get_transform().rotation.yaw,2)
+        current_x = vehicle.get_transform().location.x
+        current_y = vehicle.get_transform().location.y
+        current_yaw = math.radians(vehicle.get_transform().rotation.yaw)
+        # compensate for CoG 
+        current_x, current_y = controller.get_shifted_coordinate(current_x, current_y, current_yaw, math.sqrt(4**2+0.5**2))
+
+        # current_x = round(vehicle.get_transform().location.x,2)
+        # current_y = round(vehicle.get_transform().location.y,2)
+        # current_yaw = round(vehicle.get_transform().rotation.yaw,2)
+
         current_speed = math.sqrt(vehicle.get_velocity().x**2+vehicle.get_velocity().y**2)
         timestamp = world.wait_for_tick()
         current_timestamp = timestamp.elapsed_seconds
 
         spectator = world.get_spectator()
         transform = vehicle.get_transform()
-        spectator.set_transform(carla.Transform(transform.location + carla.Location(x=0,y = -10,z=10),
-        carla.Rotation(-30,90,0)))
+        # spectator.set_transform(carla.Transform(transform.location + carla.Location(x=0,y = -10,z=20),
+        # carla.Rotation(-20,90,0)))
+ 
+        spectator.set_transform(camera.get_transform())
+
+        # spectator.set_transform(carla.Transform(transform.location + carla.Location(x=0,y = -10,z=15),
+        # carla.Rotation(-20,90,0)))
+
+        # CAMERA SETTING
+
 
         # Update pose, timestamp
         # current_x, current_y, current_yaw = \
@@ -714,14 +752,17 @@ def exec_waypoint_nav_demo(args):
 
         # Shift x, y coordinates
         if args.control_method == 'PurePursuit':
-            length = -1.5
+            # length = -1*controller.b
+            length = -1.2
         elif args.control_method == 'Stanley' or args.control_method == 'MPC':
-            length = 1.5
+            # length = controller.a
+            length = 1.2
         else:
             length = 0.0
-        print(current_x, current_y)
-        current_x, current_y = controller.get_shifted_coordinate(current_x, current_y, current_yaw, length)
-        print(current_x, current_y)
+        shifted_x, shifted_y = controller.get_shifted_coordinate(current_x, current_y, current_yaw, length)
+        world.debug.draw_string(carla.Location(x=shifted_x,y = shifted_y), 'X', draw_shadow=False,
+                            color=carla.Color(r=0, g=0, b=255, a =255), life_time=0.01,
+                            persistent_lines=True)
         # Wait for some initial time before starting the demo
         if current_timestamp <= WAIT_TIME_BEFORE_START:
             send_control_command(vehicle,throttle=0.0, steer=0, brake=1.0)
@@ -735,7 +776,7 @@ def exec_waypoint_nav_demo(args):
         yaw_history.append(current_yaw)
         speed_history.append(current_speed)
         time_history.append(current_timestamp)
-        print(current_x,current_y)
+        
         ###
         # Controller update (this uses the controller2d.py implementation)
         ###
@@ -757,6 +798,7 @@ def exec_waypoint_nav_demo(args):
                 waypoints_np[closest_index, 1] - current_y]))
 
         new_distance = closest_distance
+        # print(new_distance)
         new_index = closest_index
         while new_distance <= closest_distance:
             closest_distance = new_distance
@@ -778,7 +820,7 @@ def exec_waypoint_nav_demo(args):
             new_distance = np.linalg.norm(np.array([
                     waypoints_np[new_index, 0] - current_x,
                     waypoints_np[new_index, 1] - current_y]))
-        print('mark00')
+        # print('mark00')
 
 
         # Once the closest index is found, return the path that has 1
@@ -798,7 +840,7 @@ def exec_waypoint_nav_demo(args):
                 waypoint_subset_last_index = waypoints_np.shape[0] - 1
                 break
 
-        print('mark')
+        # print('mark')
 
         #print("length of wp_interp",len(wp_interp))
         #print("new_index :",new_index)
@@ -821,6 +863,7 @@ def exec_waypoint_nav_demo(args):
         controller.update_values(current_x, current_y, current_yaw,
                                     current_speed,
                                     current_timestamp, frame, new_distance)
+        # print("update____")
         controller.update_controls()
         cmd_throttle, cmd_steer, cmd_brake = controller.get_commands()
 
@@ -838,12 +881,12 @@ def exec_waypoint_nav_demo(args):
             path_indices = np.floor(np.linspace(0,
                                                 new_waypoints_np.shape[0]-1,
                                                 INTERP_MAX_POINTS_PLOT))
-            """
+
             trajectory_fig.update("lookahead_path",
                     new_waypoints_np[path_indices.astype(int), 0],
                     new_waypoints_np[path_indices.astype(int), 1],
                     new_colour=[0, 0.7, 0.7])
-            """
+
             forward_speed_fig.roll("forward_speed",
                                     current_timestamp,
                                     current_speed*3.6) # m/s to km/h
@@ -852,7 +895,7 @@ def exec_waypoint_nav_demo(args):
                                     controller._desired_speed*3.6) # m/s to km/h
 
             throttle_fig.roll("throttle", current_timestamp, cmd_throttle*100)
-            #brake_fig.roll("brake", current_timestamp, cmd_brake)
+            brake_fig.roll("brake", current_timestamp, cmd_brake*100)
             steer_fig.roll("steer", current_timestamp, cmd_steer*180/np.pi)
 
             # Refresh the live plot based on the refresh rate
@@ -865,7 +908,7 @@ def exec_waypoint_nav_demo(args):
 
         # Output controller command to CARLA server
         send_control_command(vehicle,throttle=cmd_throttle,
-                                steer=cmd_steer*1,
+                                steer=cmd_steer*0.5,
                                 brake=cmd_brake)
 
         # Find if reached the end of waypoint. If the car is within
@@ -874,10 +917,13 @@ def exec_waypoint_nav_demo(args):
         dist_to_last_waypoint = np.linalg.norm(np.array([
             waypoints[-1][0] - current_x,
             waypoints[-1][1] - current_y]))
+        print("dist_to_last_waypoint:",dist_to_last_waypoint)
         if  dist_to_last_waypoint < DIST_THRESHOLD_TO_LAST_WAYPOINT:
             reached_the_end = True
-        if reached_the_end:
+            print("End")
             break
+        # if reached_the_end:
+            # break
 
     # End of demo - Stop vehicle and Store outputs to the controller output
     # directory.
@@ -891,7 +937,7 @@ def exec_waypoint_nav_demo(args):
     store_trajectory_plot(trajectory_fig.fig, 'trajectory.png')
     store_trajectory_plot(forward_speed_fig.fig, 'forward_speed.png')
     store_trajectory_plot(throttle_fig.fig, 'throttle_output.png')
-    #store_trajectory_plot(brake_fig.fig, 'brake_output.png')
+    store_trajectory_plot(brake_fig.fig, 'brake_output.png')
     store_trajectory_plot(steer_fig.fig, 'steer_output.png')
     write_trajectory_file(x_history, y_history, speed_history, time_history)
 

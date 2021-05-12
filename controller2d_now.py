@@ -4,7 +4,6 @@
 2D Controller Class to be used for the CARLA waypoint follower demo.
 """
 
-from numpy.lib import ufunclike
 import cutils
 import numpy as np
 import math
@@ -12,6 +11,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(sys.path[0] + '/..'))
 import carla
+
 
 class Controller2D(object):
     def __init__(self, waypoints, control_method, world):
@@ -31,30 +31,22 @@ class Controller2D(object):
         self._conv_rad_to_steer  = 180.0 / 70.0 / np.pi
         self._pi                 = np.pi
         self._2pi                = 2.0 * np.pi
-        # self._kP                 = 0.7        Stanley 36kph
-        # self._kI                 = 0.05
-        # self._kD                 = 0.1  not used in calculate_throttle
-
-        # self._kP                 = 3.0   Stanley 99kph(no _kD)
-        # self._kI                 = 0.2
-        # self._kD                 = 0.2
-        self._kP                 = 0.95
-        self._kI                 = 0.01
-        self._kD                 = 0.05
-        self._kB                 = 0.2
-
-        self._Kpp                = 4.5
-        self._Kvf                = 1.0
-        self._Kcte               = 0.7
+        self._kP                 = 0.05
+        self._kI                 = 0.1
+        self._kD                 = 0.0
+        self._Kpp                = 4
+        self._Kvf                = 2.5
+        self._Kcte               = 0.5
         self._Kmpc               = 0.3
         self._eps_lookahead      = 10e-3
         self._closest_distance   = 0
         self._wheelbase          = 2.4689
+        self.a                   = 1.0441
+        self.b                   = 1.4248
         self._control_method     = control_method
-        # self._steering_diff      = np.linspace(-10, 10, 21, endpoint = True)
-        self._steering_diff      = np.linspace(-5, 5, 21, endpoint = True)
+        self._steering_diff      = np.linspace(-10, 10, 21, endpoint = True)
         self.world               = world
-        self._desired_speed_mult = 0.9
+
 
     def update_values(self, x, y, yaw, speed, timestamp, frame, closest_distance):
         self._current_x         = x
@@ -82,7 +74,7 @@ class Controller2D(object):
             desired_speed = self._waypoints[min_idx][2]
         else:
             desired_speed = self._waypoints[-1][2]
-        self._desired_speed = desired_speed * self._desired_speed_mult -  1
+        self._desired_speed = desired_speed
 
     def update_waypoints(self, new_waypoints):
         self._waypoints = new_waypoints
@@ -112,28 +104,19 @@ class Controller2D(object):
         # Using PI Controller
         time_step = t - self.vars.t_previous
         speed_error = v_desired - v
-        p_term = self._kP * speed_error
-        i_term = self.vars.i_term_previous + self._kI * time_step * speed_error
-        
-        d_term = self._kD * speed_error / time_step
+        k_term = self._kP*speed_error
+        i_term = self.vars.i_term_previous + self._kI*time_step*speed_error
         self.vars.i_term_previous = i_term
-        u = p_term + i_term + d_term
-        if u>=0:
-            Tp = u
-            Bp = 0.0
-        else:
-            Tp = 0.0
-            Bp = (-1)*u*self._kB
-        # print(Tp,Bp,time_step)
-        return Tp, Bp
+        return k_term + i_term
 
     def get_shifted_coordinate(self, x, y, yaw, length):
         x_shifted = x + length*np.cos(yaw)
         y_shifted = y + length*np.sin(yaw)
-        # print(x,y,yaw,x_shifted,y_shifted)
         return x_shifted, y_shifted
 
     def get_lookahead_dis(self, v):
+        if v < 1.0:
+            return self._Kvf*v + 5
         return self._Kvf*v
 
     def get_distance(self, x1, y1, x2, y2):
@@ -148,7 +131,15 @@ class Controller2D(object):
 
     def get_alpha(self, v1, v2, lookahead_dis):
         inner_prod = v1[0]*v2[0] + v1[1]*v2[1]
-        return np.arccos(inner_prod/lookahead_dis)
+        out = inner_prod/(lookahead_dis)
+        # if math.isnan(out):
+        #     out = self.vars.out_previous
+        # if not math.isnan(out):
+        #     self.vars.out_previous = out
+        print(inner_prod,lookahead_dis,out)
+        out = np.fmax(np.fmin(out, 1.0), -1.0)
+        print(np.arccos(out))
+        return np.arccos(out)
 
     def get_steering_direction(self, v1, v2):
         corss_prod = v1[0]*v2[1] - v1[1]*v2[0]
@@ -167,7 +158,7 @@ class Controller2D(object):
 
     def get_cte_heading_error(self, v):
         proportional_cte_error = self._Kcte * self._closest_distance
-        cte_heading_error = np.arctan(proportional_cte_error/v)
+        cte_heading_error = np.arctan(proportional_cte_error/(1+v))
         cte_heading_error_mod = divmod(cte_heading_error, np.pi)[1]
         if cte_heading_error_mod > np.pi/2 and cte_heading_error_mod < np.pi:
             cte_heading_error_mod -= np.pi
@@ -181,52 +172,11 @@ class Controller2D(object):
     def calculate_steering(self, x, y, yaw, waypoints, v):
         if self._control_method == 'PurePursuit':
             lookahead_dis = self.get_lookahead_dis(v)
-            print(lookahead_dis)
             idx = self.get_goal_waypoint_index(x, y, waypoints, lookahead_dis)
+            # print(self.world)
             world = self.world
             # draw target
             world.debug.draw_string(carla.Location(x=waypoints[idx][0],y = waypoints[idx][1]), 'O', draw_shadow=False,
-                                    color=carla.Color(r=255, g=0, b=0, a =20), life_time=0.001,
-                                    persistent_lines=True)
-            # draw vehicle position
-            world.debug.draw_string(carla.Location(x,y), 'O', draw_shadow=False,
-                                    color=carla.Color(r=0, g=255, b=0, a =20), life_time=0.001,
-                                    persistent_lines=True)
-
-            v1 = [waypoints[idx][0] - x, waypoints[idx][1] - y]
-            v2 = [np.cos(yaw), np.sin(yaw)]
-            alpha = self.get_alpha(v1, v2, lookahead_dis)
-            if math.isnan(alpha):
-                alpha = self.vars.alpha_previous
-            if not math.isnan(alpha):
-                self.vars.alpha_previous = alpha
-            steering = self.get_steering_direction(v1, v2)*np.arctan((2*self._wheelbase*np.sin(alpha))/(self._Kpp*v))
-            if math.isnan(steering):
-                steering = self.vars.steering_previous
-            if not math.isnan(steering):
-                self.vars.steering_previous = steering
-            return steering
-        elif self._control_method == 'Stanley':
-            world = self.world
-            # draw target
-            world.debug.draw_string(carla.Location(x=waypoints[300][0],y = waypoints[300][1]), 'O', draw_shadow=False,
-                                    color=carla.Color(r=255, g=0, b=0, a =20), life_time=0.001,
-                                    persistent_lines=True)
-            # draw vehicle position
-            world.debug.draw_string(carla.Location(x,y), 'O', draw_shadow=False,
-                                    color=carla.Color(r=0, g=255, b=0, a =20), life_time=0.001,
-                                    persistent_lines=True)
-
-            v1 = [waypoints[300][0] - x, waypoints[300][1] - y]
-            v2 = [np.cos(yaw), np.sin(yaw)]
-            heading_error = self.get_heading_error(waypoints, yaw)
-            cte_error = self.get_steering_direction(v1, v2)*self.get_cte_heading_error(v)
-            steering =  heading_error + cte_error
-            return steering
-        elif self._control_method == 'MPC':
-            world = self.world
-            # draw target
-            world.debug.draw_string(carla.Location(x=waypoints[0][0],y = waypoints[0][1]), 'O', draw_shadow=False,
                                     color=carla.Color(r=255, g=0, b=0, a =20), life_time=0.01,
                                     persistent_lines=True)
             # draw vehicle position
@@ -234,6 +184,29 @@ class Controller2D(object):
                                     color=carla.Color(r=0, g=255, b=0, a =20), life_time=0.01,
                                     persistent_lines=True)
 
+            v1 = [waypoints[idx][0] - x, waypoints[idx][1] - y]
+            v2 = [np.cos(yaw), np.sin(yaw)]
+            print(v1,v2,yaw)
+            alpha = self.get_alpha(v1, v2, lookahead_dis)
+            if math.isnan(alpha):
+                alpha = self.vars.alpha_previous
+            if not math.isnan(alpha):
+                self.vars.alpha_previous = alpha
+            steering = self.get_steering_direction(v1, v2)*np.arctan((2*self._wheelbase*np.sin(alpha))/(_Kpp*v))
+            if math.isnan(steering):
+                steering = self.vars.steering_previous
+            if not math.isnan(steering):
+                self.vars.steering_previous = steering
+            print(steering)
+            return steering
+        elif self._control_method == 'Stanley':
+            v1 = [waypoints[0][0] - x, waypoints[0][1] - y]
+            v2 = [np.cos(yaw), np.sin(yaw)]
+            heading_error = self.get_heading_error(waypoints, yaw)
+            cte_error = self.get_steering_direction(v1, v2)*self.get_cte_heading_error(v)
+            steering =  heading_error + cte_error
+            return steering
+        elif self._control_method == 'MPC':
             steering_list = self.vars.steering_previous + self._steering_diff * self._pi/180
             last_waypoint = [waypoints[int(self._Kmpc*len(waypoints))][0], waypoints[int(self._Kmpc*len(waypoints))][1]]
             min_dis = float("inf")
@@ -274,10 +247,13 @@ class Controller2D(object):
             to create a persistent variable (not destroyed at each iteration).
             This means that the value can be stored for use in the next
             iteration of the control loop.
+
             Example: Creation of 'v_previous', default value to be 0
             self.vars.create_var('v_previous', 0.0)
+
             Example: Setting 'v_previous' to be 1.0
             self.vars.v_previous = 1.0
+
             Example: Accessing the value from 'v_previous' to be used
             throttle_output = 0.5 * self.vars.v_previous
         """
@@ -286,11 +262,13 @@ class Controller2D(object):
         self.vars.create_var('i_term_previous',0.0)
         self.vars.create_var('alpha_previous',0.0)
         self.vars.create_var('steering_previous',0.0)
+        self.vars.create_var('out_previous',0.0)
 
         # Skip the first frame to store previous values properly
         if self._start_control_loop:
             """
                 Controller iteration code block.
+
                 Controller Feedback Variables:
                     x               : Current X position (meters)
                     y               : Current Y position (meters)
@@ -310,8 +288,10 @@ class Controller2D(object):
                                       Example:
                                           waypoints[2][1]:
                                           Returns the 3rd waypoint's y position
+
                                           waypoints[5]:
                                           Returns [x5, y5, v5] (6th waypoint)
+
                 Controller Output Variables:
                     throttle_output : Throttle output (0 to 1)
                     steer_output    : Steer output (-1.22 rad to 1.22 rad)
@@ -333,7 +313,8 @@ class Controller2D(object):
             # brake_output is optional and is not required to pass the
             # assignment, as the car will naturally slow down over time.
 
-            throttle_output, brake_output = self.calculate_throttle(t, v, v_desired)
+            throttle_output = self.calculate_throttle(t, v, v_desired)
+            brake_output    = 0
 
             ######################################################
             ######################################################
@@ -345,7 +326,7 @@ class Controller2D(object):
                 access the persistent variables declared above here. For
                 example, can treat self.vars.v_previous like a "global variable".
             """
-            # print("Goal point idx =",idx)
+            #print("Goal point idx =",idx)
             # Change the steer output with the lateral controller.
             steer_output    = self.calculate_steering(x, y, yaw, waypoints, v)
 
@@ -368,3 +349,5 @@ class Controller2D(object):
         """
         self.vars.v_previous = v  # Store forward speed to be used in next step
         self.vars.t_previous = t
+
+
