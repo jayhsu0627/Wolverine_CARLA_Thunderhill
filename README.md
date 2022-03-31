@@ -43,9 +43,8 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
     src="http://img.youtube.com/vi/YxHcJTs2Sxk/0.jpg"
     alt="Shelley, Stanford's Robotic Car, Hits the Track">
 </p>
-<p>
+
     Shelley, Stanford's Robotic Car, Hits the Track
-</p>
 
 <p align="center">
     <a href="https://www.youtube.com/watch?v=WWSorkMbsC8">
@@ -53,9 +52,8 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
     src="http://img.youtube.com/vi/WWSorkMbsC8/0.jpg"
     alt="Pure Pursuit">
 </p>
-<p>
+
     Our replication is 50% of the max speed running by the pure pursuit lateral control method.
-</p>
 
 <p align="center">
     <a href="https://www.youtube.com/watch?v=kCZA5xsIFg8">
@@ -63,10 +61,8 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
     src="http://img.youtube.com/vi/kCZA5xsIFg8/0.jpg"
     alt="Shelley, Stanford's Robotic Car, Hits the Track">
 </p>
-<p>
-    This replication is running by the Stanley lateral control method with max speed of 150 kph.
-</p>
 
+    This replication is running by the Stanley lateral control method with max speed of 150 kph.
 
 
 
