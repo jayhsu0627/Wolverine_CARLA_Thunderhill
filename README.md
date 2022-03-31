@@ -25,14 +25,14 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
 *"Shelley, as the self-driving car is known, is the product of collaboration between Stanford's Dynamic Design Lab, led by mechanical engineering Associate Professor Chris Gerdes, and the Volkswagen Electronics Research Lab. Earlier this summer, Gerdes' group brought Shelley to Thunderhill for high-speed tests of the latest tweaks to the software that tells her when to brake, how tight to take turns and when to punch the gas. ---- Source: Stanford Report"*
 
 
-| **Audi TT**           |       |Audi TTS 'Shelley'   |
-| --------------------- | ----  |-------------------- |
+| **Audi TT**           |                   |Audi TTS 'Shelley'   |
+| --------------------- | ----------------- |-------------------- |
 |2.0 L I-4              |**Engine**         | 2.0 L I-4           |
 |23/30 mpg (city/hwy)   |**Fuel Efficiency**|23/27 mpg (city/hwy) |
 |220 @ 4500 rpm	        |**Horsepower**     |292 @ 5400 rpm       |
 |258 ft-lbs @ 1600 rpm	|**Torque**         | 280 ft-lbs @ 1900 rpm|
 |6-speed auto	        |**Transmission**   |6-speed auto	      |
-|5.3 sec	        |**0-to-60 time**   |4.6 sec	      |
+|5.3 sec	            |**0-to-60 time**   |4.6 sec	          |
 | ![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/Audi_TT.png) |**Apperance**   |![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/stanford-audi-tts.jpg)	      |
 
 #### Video Archive:
@@ -43,6 +43,30 @@ This project is inspired by[ Nitin Kapania's Stanford PhD thesis](https://github
     src="http://img.youtube.com/vi/YxHcJTs2Sxk/0.jpg"
     alt="Shelley, Stanford's Robotic Car, Hits the Track">
 </p>
+<p>
+    Shelley, Stanford's Robotic Car, Hits the Track
+</p>
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=WWSorkMbsC8">
+    <img width="460" height="300" 
+    src="http://img.youtube.com/vi/WWSorkMbsC8/0.jpg"
+    alt="Pure Pursuit">
+</p>
+<p>
+    Our replication is 50% of the max speed running by the pure pursuit lateral control method.
+</p>
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=kCZA5xsIFg8">
+    <img width="460" height="300" 
+    src="http://img.youtube.com/vi/kCZA5xsIFg8/0.jpg"
+    alt="Shelley, Stanford's Robotic Car, Hits the Track">
+</p>
+<p>
+    This replication is running by the Stanley lateral control method with max speed of 150 kph.
+</p>
+
 
 
 
@@ -136,9 +160,12 @@ You can try my Colab notebook by click
 
 [!["Stanford.ipynb" Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/11XgI3dEN68-wI52tvl7awQ_fPqkG-qge?usp=sharing)
 
+Generated path.
+![](https://github.com/jayhsu0627/Wolverine_CARLA_Thunderhill/blob/main/pics/generated_path.png)
+
+While our simulation video uses the centerline of the track as the tracking target for the control algorithm, what Colab generates is the optimal path that simulates a real racer. In the follow-up work, it can be considered to import the optimized path into the simulation environment for testing, but the apex of the road model needs to be optimized.
+
 #### Navigate and Control
-
-
 
 ```
 # Use PurePursuit to control
@@ -151,8 +178,8 @@ python Try_w.py --control-method Stanley
 python Try_w.py --control-method MPC
 ```
 
-#### Easter egg
-##### Dynamic change sun angle
+<!-- #### Easter egg
+##### Dynamic change sun angle -->
 
 
 
